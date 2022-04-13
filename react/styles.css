@@ -1,0 +1,129 @@
+.shopAllButtonContainer {
+    text-align: center;
+    font-weight: bold;
+    background-color: #ee2d25;
+    margin: 0 0 1rem 0;
+    padding: 1rem 0.5rem;
+}
+
+.shopAllButton {
+    text-decoration: none;
+    color: white;
+}
+
+.pageNavTextContainer {
+    text-align: center;
+    font-weight: bold;
+    background-color: #ee2d25;
+    margin: 0;
+    padding: 0.5rem;
+}
+
+.pageNavText {
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.linkContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    transition: background-color 250ms ease-in-out;
+}
+
+.linkContainer:hover {
+    background-color: #ee2d25;
+}
+
+.linkContainer:hover .link {
+    color: white;
+    font-weight: bold;
+}
+
+.linkWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.link {
+    margin-left: 1rem;
+    transition: color 250ms ease-in-out;
+}
+
+.link, .subMenuLink {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: black;
+}
+
+.subMenuContainer {
+    width: 100%;
+}
+
+.subMenuParent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    background-color: #eaeaea;
+    cursor: pointer;
+    transition: height 250ms ease-in-out;
+}
+
+.subMenuText {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.subMenuWrapper {
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+    transition: height 250ms ease-in-out;
+}
+
+.subMenuLinkContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.subMenuLinkContainer:hover {
+    background-color: #ee2d25;
+    transition: background-color 250ms ease-in-out;
+}
+
+.subMenuLinkContainer:hover .subMenuLink {
+    color: white;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+.subMenuLink {
+    margin-left: 1rem;
+    transition: margin-left 250ms ease-in-out;
+}
+
+.expand {
+    font-size: 1rem;
+    padding-right: 0.5rem;
+}
+
+/* Desktop Rules - LM */
+@media (min-width: 1026px) {
+    .pageNavTextContainer {
+        display: none;
+    }
+}
+
+/* Mobile Rules - LM */
+@media (max-width: 1025px) {
+    .shopAllButtonContainer {
+        display: none;
+    }
+}
