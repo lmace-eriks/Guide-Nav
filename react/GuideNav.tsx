@@ -18,6 +18,8 @@ interface NavObject {
 
 const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLinks }) => {
   const heightOfLink: number = 2;
+  const closedIcon: string = "▶"
+  const openIcon: string = "▼"
 
   const closeAllSubMenus = () => {
     // @ts-expect-error
@@ -30,7 +32,7 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
     for (let i = 0; i < subMenuParents.length; i++) {
       subMenuParents[i].style.height = `${heightOfLink}rem`
       subMenuWrappers[i].style.height = "0rem";
-      allArrows[i].innerText = "▼";
+      allArrows[i].innerText = closedIcon;
     }
   }
 
@@ -41,11 +43,11 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
         closeAllSubMenus();
         e.target.children[1].style.height = `${numberOfChildren * heightOfLink}rem`;
         e.target.style.height = `${numberOfChildren * heightOfLink + heightOfLink}rem`;
-        e.target.firstChild.children[0].innerText = "▲";
+        e.target.firstChild.children[0].innerText = openIcon;
       } else {
         e.target.children[1].style.height = "0rem";
         e.target.style.height = `${heightOfLink}rem`;
-        e.target.firstChild.children[0].innerText = "▼";
+        e.target.firstChild.children[0].innerText = closedIcon;
       }
     }
     if (e.target.className === "eriksbikeshop-guidenav-1-x-subMenuText") {
@@ -54,11 +56,11 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
         closeAllSubMenus();
         e.target.nextSibling.style.height = `${numberOfChildren * heightOfLink}rem`;
         e.target.parentNode.style.height = `${numberOfChildren * heightOfLink + heightOfLink}rem`;
-        e.target.firstChild.innerText = "▲";
+        e.target.firstChild.innerText = openIcon;
       } else {
         e.target.nextSibling.style.height = "0rem";
         e.target.parentNode.style.height = `${heightOfLink}rem`;
-        e.target.firstChild.innerText = "▼";
+        e.target.firstChild.innerText = closedIcon;
       }
     }
     if (e.target.className === "eriksbikeshop-guidenav-1-x-expand") {
@@ -67,11 +69,11 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
         closeAllSubMenus();
         e.target.parentNode.nextSibling.style.height = `${numberOfChildren * heightOfLink}rem`;
         e.target.parentNode.parentNode.style.height = `${numberOfChildren * heightOfLink + heightOfLink}rem`;
-        e.target.innerText = "▲";
+        e.target.innerText = openIcon;
       } else {
         e.target.parentNode.nextSibling.style.height = "0rem";
         e.target.parentNode.parentNode.style.height = `${heightOfLink}rem`;
-        e.target.innerText = "▼";
+        e.target.innerText = closedIcon;
       }
     }
   }
@@ -93,7 +95,7 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
           {nav.subMenu &&
             <div className={styles.subMenuContainer}>
               <div onClick={handleSubMenuClick} style={{ height: `${heightOfLink}rem` }} className={styles.subMenuParent}>
-                <div style={{ height: `${heightOfLink}rem` }} className={styles.subMenuText}><span className={styles.expand}>▼</span> {nav.text}</div>
+                <div style={{ height: `${heightOfLink}rem` }} className={styles.subMenuText}><span className={styles.expand}>▶</span> {nav.text}</div>
                 <div className={styles.subMenuWrapper}>
                   {nav.subMenu.map(sub => (
                     <div key={sub.text} style={{ height: `${heightOfLink}rem` }} className={styles.subMenuLinkContainer}>
