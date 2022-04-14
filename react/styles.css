@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .shopAllButtonContainer {
     text-align: center;
     font-weight: bold;

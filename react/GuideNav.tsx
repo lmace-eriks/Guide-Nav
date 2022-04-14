@@ -34,6 +34,11 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
       subMenuWrappers[i].style.height = "0rem";
       allArrows[i].innerText = closedIcon;
     }
+
+    // Prevents the Head Room app from covering the scrolled to content - LM
+    //@ts-expect-error
+    const headRoom: any = document.getElementsByClassName("headroom")[0];
+    headRoom.style.position = "static";
   }
 
   const handleSubMenuClick = (e: any) => {
