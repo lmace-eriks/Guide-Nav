@@ -34,11 +34,6 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
       subMenuWrappers[i].style.height = "0rem";
       allArrows[i].innerText = closedIcon;
     }
-
-    // Prevents the Head Room app from covering the scrolled to content - LM
-    //@ts-expect-error
-    const headRoom: any = document.getElementsByClassName("headroom")[0];
-    headRoom.style.position = "static";
   }
 
   const handleSubMenuClick = (e: any) => {
@@ -83,6 +78,20 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
     }
   }
 
+  const disappearHeadroom = () => {
+    // Prevents the Head Room app from covering the scrolled to content - LM
+
+    //@ts-expect-error
+    const headRoom: any = document.getElementsByClassName("headroom")[0];
+    headRoom.style.position = "static";
+  }
+
+  const handleNavigationClick = (e: any) => {
+    // If clicking outside of a submenu, close all submenus - LM
+    if (e.target.parentElement.className === "eriksbikeshop-guidenav-1-x-linkWrapper") closeAllSubMenus();
+    disappearHeadroom();
+  }
+
   useEffect(() => {
     console.clear();
   })
@@ -104,7 +113,7 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
                 <div className={styles.subMenuWrapper}>
                   {nav.subMenu.map(sub => (
                     <div key={sub.text} style={{ height: `${heightOfLink}rem` }} className={styles.subMenuLinkContainer}>
-                      <a href={sub.link} className={styles.subMenuLink}>- {sub.text}</a>
+                      <a onClick={handleNavigationClick} href={sub.link} className={styles.subMenuLink}>- {sub.text}</a>
                     </div>
                   ))}
                 </div>
@@ -113,7 +122,7 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
           }
           {nav.link &&
             <div style={{ height: `${heightOfLink}rem` }} className={styles.linkWrapper}>
-              <a onClick={closeAllSubMenus} href={nav.link} className={styles.link}>- {nav.text}</a>
+              <a onClick={handleNavigationClick} href={nav.link} className={styles.link}>- {nav.text}</a>
             </div>
           }
         </div>
