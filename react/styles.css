@@ -9,14 +9,15 @@ nav * {
 .shopAllButtonContainer {
     text-align: center;
     font-weight: bold;
-    background-color: #ee2d25;
     margin: 0 0 1rem 0;
-    padding: 1rem 0.5rem;
 }
 
 .shopAllButton {
+    display: block;
     text-decoration: none;
     color: white;
+    padding: 1rem 0.5rem;
+    background-color: #ee2d25;
 }
 
 .pageNavTextContainer {

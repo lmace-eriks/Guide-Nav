@@ -1,5 +1,6 @@
 {
   "guidenav": {
-    "component": "GuideNav"
+    "component": "GuideNav",
+    "composition": "children"
   }
 }

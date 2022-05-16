@@ -1,22 +1,22 @@
-import { mathMod } from 'ramda';
 import React from 'react';
-import { useState, useEffect, useRef, CSSProperties } from 'react';
+import { useEffect } from 'react';
 
 // Styles
 import styles from "./styles.css";
 
 interface GuideNavProps {
-  shopAll: NavObject
+  shopAll?: NavObject,
+  navigationType?: String,
   navLinks: Array<NavObject>
 }
 
 interface NavObject {
   text: string,
-  link?: string
+  link?: string,
   subMenu?: Array<NavObject>
 }
 
-const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLinks }) => {
+const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navigationType, navLinks }) => {
   const heightOfLink: number = 2;
   const closedIcon: string = "▶"
   const openIcon: string = "▼"
@@ -37,44 +37,49 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
   }
 
   const handleSubMenuClick = (e: any) => {
-    if (e.target.className === "eriksbikeshop-guidenav-1-x-subMenuParent") {
-      const numberOfChildren: number = e.target.children[1].children.length;
-      if (e.target.children[1].style.height != `${numberOfChildren * heightOfLink}rem`) {
-        closeAllSubMenus();
-        e.target.children[1].style.height = `${numberOfChildren * heightOfLink}rem`;
-        e.target.style.height = `${numberOfChildren * heightOfLink + heightOfLink}rem`;
-        e.target.firstChild.children[0].innerText = openIcon;
-      } else {
-        e.target.children[1].style.height = "0rem";
-        e.target.style.height = `${heightOfLink}rem`;
-        e.target.firstChild.children[0].innerText = closedIcon;
+    const clicked = e.target;
+    const collapsedMenuHeight: string = "0rem";
+
+    switch (clicked.className) {
+      case "eriksbikeshop-guidenav-1-x-subMenuParent": {
+        const numberOfChildren: number = clicked.children[1].children.length;
+        const openParentMenuHeight: number = numberOfChildren * heightOfLink + heightOfLink;
+        const openSubMenuHeight: number = numberOfChildren * heightOfLink;
+        const menuIsClosed = clicked.children[1].style.height != `${numberOfChildren * heightOfLink}rem`;
+
+        if (menuIsClosed) closeAllSubMenus();
+        clicked.style.height = menuIsClosed ? `${openParentMenuHeight}rem` : `${heightOfLink}rem`;
+        clicked.children[1].style.height = menuIsClosed ? `${openSubMenuHeight}rem` : collapsedMenuHeight;
+        clicked.firstChild.children[0].innerText = menuIsClosed ? openIcon : closedIcon;
+        break;
       }
-    }
-    if (e.target.className === "eriksbikeshop-guidenav-1-x-subMenuText") {
-      const numberOfChildren: number = e.target.nextSibling.children.length;
-      if (e.target.nextSibling.style.height != `${numberOfChildren * heightOfLink}rem`) {
-        closeAllSubMenus();
-        e.target.nextSibling.style.height = `${numberOfChildren * heightOfLink}rem`;
-        e.target.parentNode.style.height = `${numberOfChildren * heightOfLink + heightOfLink}rem`;
-        e.target.firstChild.innerText = openIcon;
-      } else {
-        e.target.nextSibling.style.height = "0rem";
-        e.target.parentNode.style.height = `${heightOfLink}rem`;
-        e.target.firstChild.innerText = closedIcon;
+
+      case "eriksbikeshop-guidenav-1-x-subMenuText": {
+        const numberOfChildren: number = clicked.nextSibling.children.length;
+        const openParentMenuHeight: number = numberOfChildren * heightOfLink + heightOfLink;
+        const openSubMenuHeight: number = numberOfChildren * heightOfLink;
+        const menuIsClosed = clicked.nextSibling.style.height != `${numberOfChildren * heightOfLink}rem`;
+
+        if (menuIsClosed) closeAllSubMenus();
+        clicked.parentNode.style.height = menuIsClosed ? `${openParentMenuHeight}rem` : `${heightOfLink}rem`;
+        clicked.nextSibling.style.height = menuIsClosed ? `${openSubMenuHeight}rem` : collapsedMenuHeight;
+        clicked.firstChild.innerText = menuIsClosed ? openIcon : closedIcon;
+        break;
       }
-    }
-    if (e.target.className === "eriksbikeshop-guidenav-1-x-expand") {
-      const numberOfChildren: number = e.target.parentNode.nextSibling.children.length;
-      if (e.target.parentNode.nextSibling.style.height != `${numberOfChildren * heightOfLink}rem`) {
-        closeAllSubMenus();
-        e.target.parentNode.nextSibling.style.height = `${numberOfChildren * heightOfLink}rem`;
-        e.target.parentNode.parentNode.style.height = `${numberOfChildren * heightOfLink + heightOfLink}rem`;
-        e.target.innerText = openIcon;
-      } else {
-        e.target.parentNode.nextSibling.style.height = "0rem";
-        e.target.parentNode.parentNode.style.height = `${heightOfLink}rem`;
-        e.target.innerText = closedIcon;
+
+      case "eriksbikeshop-guidenav-1-x-expand": {
+        const numberOfChildren: number = clicked.parentNode.nextSibling.children.length;
+        const openParentMenuHeight: number = numberOfChildren * heightOfLink + heightOfLink;
+        const openSubMenuHeight: number = numberOfChildren * heightOfLink;
+        const menuIsClosed = clicked.parentNode.nextSibling.style.height != `${numberOfChildren * heightOfLink}rem`;
+
+        if (menuIsClosed) closeAllSubMenus();
+        clicked.parentNode.parentNode.style.height = menuIsClosed ? `${openParentMenuHeight}rem` : `${heightOfLink}rem`;
+        clicked.parentNode.nextSibling.style.height = menuIsClosed ? `${openSubMenuHeight}rem` : collapsedMenuHeight;
+        clicked.innerText = menuIsClosed ? openIcon : closedIcon;
       }
+      default:
+        break;
     }
   }
 
@@ -92,18 +97,38 @@ const GuideNav: StorefrontFunctionComponent<GuideNavProps> = ({ shopAll, navLink
     disappearHeadroom();
   }
 
+  const vtexTableHack = () => {
+    // VTEX will strip out any "colspan" attribute from any tables in rich text.
+    // This is an embarrassing workaround.
+    // Currently this is only active on the bike sizing page - LM 04/28/2022
+
+    // @ts-expect-error
+    const tableHack = document.getElementsByClassName("vtex-ebs-bike-size-th")[0];
+    if (tableHack) tableHack.setAttribute("colspan", "2");
+  }
+
   useEffect(() => {
     console.clear();
+    vtexTableHack();
   })
 
   return (
     <nav>
       <div className={styles.pageNavTextContainer}>
-        <p className={styles.pageNavText}>Page Navigation</p>
+        <p className={styles.pageNavText}>{navigationType ? navigationType : "Page"} Navigation</p>
       </div>
-      <div className={styles.shopAllButtonContainer}>
-        <a href={shopAll.link} className={styles.shopAllButton}>Shop All {shopAll.text}</a>
-      </div>
+      {shopAll &&
+        <div className={styles.shopAllButtonContainer}>
+          <a href={shopAll.link} className={styles.shopAllButton}>Shop All {shopAll.text}</a>
+        </div>
+      }
+      {navigationType &&
+        <div className={styles.shopAllButtonContainer}>
+          <div className={styles.shopAllButton}>{navigationType} Navigation</div>
+        </div>
+      }
+
+
       {navLinks.map(nav => (
         <div key={nav.text} className={styles.linkContainer}>
           {nav.subMenu &&
